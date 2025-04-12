@@ -1,0 +1,16 @@
+{
+  "name": "books-sharing-platform",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r run build",
+    "start": "pnpm -r run start:prod",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "dev": "pnpm -r --parallel run dev"
+  },
+  "keywords": [],
+  "author": "Kei-K23",
+  "license": "MIT"
+}
