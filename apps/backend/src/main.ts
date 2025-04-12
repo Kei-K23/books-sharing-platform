@@ -9,22 +9,23 @@ import { apiReference } from '@scalar/nestjs-api-reference';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('Books Sharing Platform')
-    .setDescription('Books Sharing Platform for book lovers')
-    .setVersion('0.1')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-
-  app.use(
-    '/api/v1/docs',
-    apiReference({
-      spec: {
-        content: document,
-      },
-    }),
-  );
+  // Only show API documentation when not in production
+  if (process.env.NODE_ENV !== 'production') {
+    const config = new DocumentBuilder()
+      .setTitle('Books Sharing Platform')
+      .setDescription('Books Sharing Platform for book lovers')
+      .setVersion('0.1')
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    app.use(
+      '/api/v1/docs',
+      apiReference({
+        spec: {
+          content: document,
+        },
+      }),
+    );
+  }
 
   const frontendDist = join(__dirname, '../..', 'frontend/dist');
   // Serve static files

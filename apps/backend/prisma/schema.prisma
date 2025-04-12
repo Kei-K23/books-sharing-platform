@@ -37,19 +37,19 @@ model User {
 }
 
 model Book {
-  id             String    @id @default(uuid())
-  title          String
-  description    String
-  language       String
-  author         String?
-  publisher      String?
-  isbn           Boolean?
-  published_year DateTime?
-  coverImage     String?
-  pageCount      Int
-  ownerId        String
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id            String    @id @default(uuid())
+  title         String
+  description   String
+  language      String
+  author        String?
+  publisher     String?
+  isbn          String?
+  publishedYear DateTime?
+  coverImage    String?
+  pageCount     Int
+  ownerId       String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
