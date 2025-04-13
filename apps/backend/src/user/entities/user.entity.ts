@@ -3,6 +3,10 @@ import { $Enums, User } from 'generated/prisma';
 import { Exclude } from 'class-transformer';
 
 export class UserEntity implements User {
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial);
+  }
+
   @ApiProperty()
   id: string;
   @ApiProperty()

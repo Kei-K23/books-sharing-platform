@@ -35,7 +35,7 @@ export class CreateUserDto {
   password: string;
   @ApiProperty()
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   @MinLength(5)
   @MaxLength(255)
   location: string;

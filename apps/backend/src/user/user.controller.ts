@@ -7,31 +7,45 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiCreatedResponse } from '@nestjs/swagger';
+import { UserEntity } from './entities/user.entity';
 
-@Controller('user')
+@Controller('api/v1/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @ApiCreatedResponse({ type: UserEntity })
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() createUserDto: CreateUserDto) {
+    return new UserEntity(await this.userService.create(createUserDto));
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  @ApiCreatedResponse({ type: UserEntity, isArray: true })
+  @HttpCode(HttpStatus.OK)
+  async findAll() {
+    return (await this.userService.findAll()).map(
+      (user) => new UserEntity(user),
+    );
   }
 
   @Get(':id')
+  @ApiCreatedResponse({ type: UserEntity })
+  @HttpCode(HttpStatus.OK)
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiCreatedResponse({ type: UserEntity })
+  @HttpCode(HttpStatus.OK)
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -40,6 +54,8 @@ export class UserController {
   }
 
   @Delete(':id')
+  @ApiCreatedResponse({ type: UserEntity })
+  @HttpCode(HttpStatus.OK)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.remove(id);
   }
