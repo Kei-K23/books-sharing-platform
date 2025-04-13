@@ -1,6 +1,6 @@
 # 📚 Books Sharing Platform
 
-Books sharing platform that build with VueJS, NestJS, Postgres and TypeScript.
+Books sharing platform that build with NodeJS, NestJS, Postgres, React and TypeScript.
 
 ## 📘 API SPECIFICATION (v1)
 
