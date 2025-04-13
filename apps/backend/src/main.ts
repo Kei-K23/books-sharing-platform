@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -33,6 +34,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   // Global interceptors pipe
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  // Global exceptions filters
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   const frontendDist = join(__dirname, '../..', 'frontend/dist');
   // Serve static files
@@ -40,7 +43,7 @@ async function bootstrap() {
 
   // Serve Vue SPA fallback **only for non-API routes**
   const expressApp = app.getHttpAdapter().getInstance();
-  expressApp.get(/^\/(?!api).*/, (req: Request, res: Response) => {
+  expressApp.get(/^\/(?!api).*/, (_req: Request, res: Response) => {
     res.sendFile(join(frontendDist, 'index.html'));
   });
 
