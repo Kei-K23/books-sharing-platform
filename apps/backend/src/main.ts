@@ -15,6 +15,7 @@ async function bootstrap() {
     const config = new DocumentBuilder()
       .setTitle('Books Sharing Platform')
       .setDescription('Books Sharing Platform for book lovers')
+      .addBearerAuth()
       .setVersion('0.1')
       .build();
     const document = SwaggerModule.createDocument(app, config);
@@ -28,6 +29,11 @@ async function bootstrap() {
     );
   }
 
+  // Global validation pipe
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  // Global interceptors pipe
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
   const frontendDist = join(__dirname, '../..', 'frontend/dist');
   // Serve static files
   app.useStaticAssets(frontendDist);
@@ -37,11 +43,6 @@ async function bootstrap() {
   expressApp.get(/^\/(?!api).*/, (req: Request, res: Response) => {
     res.sendFile(join(frontendDist, 'index.html'));
   });
-
-  // Global validation pipe
-  app.useGlobalPipes(new ValidationPipe());
-  // Global interceptors pipe
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   await app.listen(process.env.PORT ?? 3000);
 }
