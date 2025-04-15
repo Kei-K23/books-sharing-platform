@@ -41,12 +41,14 @@ export class ReviewService {
     return await this.prisma.review.findMany({ where: { bookId } });
   }
 
-  async findById(id: string) {
-    return await this.prisma.review.findUniqueOrThrow({ where: { id } });
+  async findByIdAndUserId(id: string, userId: string) {
+    return await this.prisma.review.findUniqueOrThrow({
+      where: { id, userId },
+    });
   }
 
-  async update(id: string, updateReviewDto: UpdateReviewDto) {
-    const review = await this.findById(id);
+  async update(id: string, userId: string, updateReviewDto: UpdateReviewDto) {
+    const review = await this.findByIdAndUserId(id, userId);
 
     return this.prisma.review.update({
       where: { id: review.id },
@@ -54,11 +56,11 @@ export class ReviewService {
     });
   }
 
-  async delete(id: string) {
-    const review = await this.findById(id);
+  async delete(id: string, userId: string) {
+    const review = await this.findByIdAndUserId(id, userId);
 
     return this.prisma.review.delete({
-      where: { id: review.id },
+      where: { id: review.id, userId },
     });
   }
 }

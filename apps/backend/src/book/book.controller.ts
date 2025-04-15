@@ -25,6 +25,7 @@ import { ReviewService } from 'src/review/review.service';
 import { GetAuthUser } from 'src/auth/decorators/get-auth-user.decorator';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateReviewDto } from 'src/review/dto/update-review.dto';
 
 @Controller('api/v1/books')
 @ApiTags('Books')
@@ -96,5 +97,28 @@ export class BookController {
   @ApiCreatedResponse({ type: ReviewEntity })
   getReviews(@Param('id', ParseUUIDPipe) id: string) {
     return this.reviewService.findAllByBookId(id);
+  }
+
+  @Patch(':id/reviews')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: ReviewEntity })
+  updateReview(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetAuthUser() authUser: UserEntity,
+    @Body() updateReviewDto: UpdateReviewDto,
+  ) {
+    return this.reviewService.update(id, authUser.id, updateReviewDto);
+  }
+
+  @Delete(':id/reviews')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: ReviewEntity })
+  deleteReview(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetAuthUser() authUser: UserEntity,
+  ) {
+    return this.reviewService.delete(id, authUser.id);
   }
 }
