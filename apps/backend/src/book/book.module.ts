@@ -7,5 +7,6 @@ import { PrismaModule } from 'src/prisma/prisma.module';
   controllers: [BookController],
   providers: [BookService],
   imports: [PrismaModule],
+  exports: [BookService],
 })
 export class BookModule {}

@@ -15,7 +15,7 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { BookEntity } from './entities/book.entity';
 
 @Controller('api/v1/books')
-@ApiTags('books')
+@ApiTags('Books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 

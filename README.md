@@ -119,5 +119,3 @@ Books sharing platform that build with NodeJS, NestJS, Postgres, React and TypeS
 | Method | Endpoint      | Description              |
 | ------ | ------------- | ------------------------ |
 | GET    | `/activities` | Get recent user activity |
-
---

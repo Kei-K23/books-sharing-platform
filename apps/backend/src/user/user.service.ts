@@ -17,11 +17,20 @@ export class UserService {
   }
 
   async findAll() {
-    return await this.prisma.user.findMany();
+    return await this.prisma.user.findMany({
+      orderBy: [
+        {
+          updatedAt: 'desc',
+        },
+        {
+          createdAt: 'desc',
+        },
+      ],
+    });
   }
 
   async findOne(id: string) {
-    return await this.prisma.user.findUnique({
+    return await this.prisma.user.findUniqueOrThrow({
       where: {
         id,
       },
@@ -29,7 +38,7 @@ export class UserService {
   }
 
   async findOneByEmail(email: string) {
-    return await this.prisma.user.findUnique({
+    return await this.prisma.user.findUniqueOrThrow({
       where: {
         email,
       },
@@ -37,15 +46,19 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+
     return await this.prisma.user.update({
-      where: { id },
+      where: { id: user.id },
       data: updateUserDto,
     });
   }
 
   async remove(id: string) {
+    const user = await this.findOne(id);
+
     return await this.prisma.user.delete({
-      where: { id },
+      where: { id: user.id },
     });
   }
 }

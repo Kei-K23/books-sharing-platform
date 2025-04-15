@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDate,
+  IsDateString,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -22,7 +22,6 @@ export class CreateBookDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(5)
-  @MaxLength(500)
   description: string;
   @ApiProperty()
   @IsString()
@@ -49,7 +48,7 @@ export class CreateBookDto {
   @MaxLength(100)
   isbn?: string;
   @ApiProperty()
-  @IsDate()
+  @IsDateString()
   @IsOptional()
   publishedYear?: Date;
   @ApiProperty()

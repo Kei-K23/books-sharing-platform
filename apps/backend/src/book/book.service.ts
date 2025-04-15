@@ -12,23 +12,36 @@ export class BookService {
   }
 
   async findAll() {
-    return await this.prisma.book.findMany();
+    return await this.prisma.book.findMany({
+      orderBy: [
+        {
+          updatedAt: 'desc',
+        },
+        {
+          createdAt: 'desc',
+        },
+      ],
+    });
   }
 
   async findOne(id: string) {
-    return await this.prisma.book.findUnique({ where: { id } });
+    return await this.prisma.book.findUniqueOrThrow({ where: { id } });
   }
 
   async update(id: string, updateBookDto: UpdateBookDto) {
+    const book = await this.findOne(id);
+
     return await this.prisma.book.update({
       where: {
-        id,
+        id: book.id,
       },
       data: updateBookDto,
     });
   }
 
   async remove(id: string) {
-    return await this.prisma.book.delete({ where: { id } });
+    const book = await this.findOne(id);
+
+    return await this.prisma.book.delete({ where: { id: book.id } });
   }
 }
