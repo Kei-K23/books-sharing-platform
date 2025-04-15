@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, User } from 'generated/prisma';
 import { Exclude } from 'class-transformer';
+import { BookEntity } from 'src/book/entities/book.entity';
 
 export class UserEntity implements User {
   constructor(partial: Partial<UserEntity>) {
@@ -29,4 +30,7 @@ export class UserEntity implements User {
   createdAt: Date;
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty({ required: false, type: [BookEntity] })
+  books?: BookEntity[];
 }

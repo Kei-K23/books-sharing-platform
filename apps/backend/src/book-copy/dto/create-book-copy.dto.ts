@@ -21,11 +21,11 @@ export class CreateBookCopyDto {
   @IsBoolean()
   @IsNotEmpty()
   isAvailable: boolean;
-  @ApiProperty({ default: $Enums.BookCondition.GOOD })
+  @ApiProperty({ default: $Enums.BookCondition.GOOD, required: false })
   @IsEnum($Enums.BookCondition)
   @IsNotEmpty()
   condition: $Enums.BookCondition;
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, type: String, required: false })
   @IsOptional()
   @IsString()
   @MinLength(3)

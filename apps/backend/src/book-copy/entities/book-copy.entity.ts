@@ -10,7 +10,7 @@ export class BookCopyEntity implements BookCopy {
   isAvailable: boolean;
   @ApiProperty()
   condition: $Enums.BookCondition;
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, type: String, required: false })
   notes: string | null;
   @ApiProperty()
   format: $Enums.BookCopyFormat;

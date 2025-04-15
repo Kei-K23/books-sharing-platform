@@ -28,6 +28,24 @@ export class BookService {
     return await this.prisma.book.findUniqueOrThrow({ where: { id } });
   }
 
+  async findOneWithBookCopies(id: string) {
+    return await this.prisma.book.findUniqueOrThrow({
+      where: { id },
+      include: {
+        bookCopies: {
+          orderBy: [
+            {
+              updatedAt: 'desc',
+            },
+            {
+              createdAt: 'desc',
+            },
+          ],
+        },
+      },
+    });
+  }
+
   async update(id: string, updateBookDto: UpdateBookDto) {
     const book = await this.findOne(id);
 

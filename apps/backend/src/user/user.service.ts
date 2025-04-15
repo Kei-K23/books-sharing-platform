@@ -37,6 +37,19 @@ export class UserService {
     });
   }
 
+  async findOneWithBooks(id: string) {
+    return await this.prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        books: {
+          orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
+        },
+      },
+    });
+  }
+
   async findOneByEmail(email: string) {
     return await this.prisma.user.findUniqueOrThrow({
       where: {
