@@ -40,7 +40,12 @@ async function bootstrap() {
   const frontendDist = join(__dirname, '../..', 'frontend/dist');
   // Serve static files
   app.useStaticAssets(frontendDist);
-
+  // Enable CORS
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
   // Serve Vue SPA fallback **only for non-API routes**
   const expressApp = app.getHttpAdapter().getInstance();
   expressApp.get(/^\/(?!api).*/, (_req: Request, res: Response) => {

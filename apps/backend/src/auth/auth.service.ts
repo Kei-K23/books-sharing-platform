@@ -5,6 +5,7 @@ import * as argon2 from 'argon2';
 import { AuthEntity } from './entities/auth.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedException } from 'src/common/exceptions/unauthorized-exception';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -19,10 +20,10 @@ export class AuthService {
     if (!user || !(await argon2.verify(user.password, pass))) {
       throw new UnauthorizedException('Invalid sign in credentials');
     }
-    const { password: _password, ...result } = user;
 
     return {
-      accessToken: this.jwtService.sign({ userId: result.id }),
+      accessToken: this.jwtService.sign({ userId: user.id }),
+      user: new UserEntity(user),
     };
   }
 

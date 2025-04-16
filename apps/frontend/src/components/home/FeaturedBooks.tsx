@@ -139,6 +139,7 @@ const FeaturedBooks = () => {
                   variant="outline"
                   size="icon"
                   onClick={prevBook}
+                  className="hover:text-muted-foreground cursor-pointer"
                   aria-label="Previous book"
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -148,6 +149,7 @@ const FeaturedBooks = () => {
                   size="icon"
                   onClick={nextBook}
                   aria-label="Next book"
+                  className="hover:text-muted-foreground cursor-pointer"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </Button>

@@ -27,7 +27,7 @@ const Hero = () => {
                 size="lg"
                 className="font-medium"
               >
-                <Link to="/books">
+                <Link to="/books" className="hover:text-muted-foreground">
                   Browse Books
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>

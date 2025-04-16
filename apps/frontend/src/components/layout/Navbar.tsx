@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -20,11 +19,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getCurrentUser } from "@/utils/dummyData";
+import { useAuth } from "@/context/auth";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const currentUser = getCurrentUser();
+  const { loading, logout, user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header className="border-b bg-white sticky top-0 z-50">
@@ -70,7 +69,7 @@ const Navbar = () => {
               <Search className="h-5 w-5" />
             </Button>
 
-            {isLoggedIn ? (
+            {!loading && !!user ? (
               <>
                 {/* Notifications */}
                 <DropdownMenu>
@@ -132,15 +131,15 @@ const Navbar = () => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="relative h-8 w-8 rounded-full"
+                      className="relative h-8 w-8 rounded-full hover:text-muted-foreground"
                     >
                       <Avatar className="h-8 w-8">
                         <AvatarImage
-                          src={currentUser.profilePicture}
-                          alt={currentUser.username}
+                          src={user.profilePicture}
+                          alt={user.username}
                         />
                         <AvatarFallback>
-                          {currentUser.username.charAt(0).toUpperCase()}
+                          {user.username.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                     </Button>
@@ -149,10 +148,10 @@ const Navbar = () => {
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
-                          {currentUser.username}
+                          {user.username}
                         </p>
                         <p className="text-xs leading-none text-muted-foreground">
-                          {currentUser.email}
+                          {user.email}
                         </p>
                       </div>
                     </DropdownMenuLabel>
@@ -171,7 +170,10 @@ const Navbar = () => {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                      onClick={() => setIsLoggedIn(false)}
+                      onClick={() => {
+                        logout();
+                        navigate("/");
+                      }}
                       className="text-destructive"
                     >
                       Log out
@@ -233,7 +235,7 @@ const Navbar = () => {
                     >
                       About
                     </Link>
-                    {isLoggedIn && (
+                    {!loading && !!user && (
                       <>
                         <hr />
                         <Link
@@ -262,7 +264,10 @@ const Navbar = () => {
                         </Link>
                         <Button
                           variant="outline"
-                          onClick={() => setIsLoggedIn(false)}
+                          onClick={() => {
+                            logout();
+                            navigate("/");
+                          }}
                           className="justify-start px-2 text-destructive"
                         >
                           Log out
